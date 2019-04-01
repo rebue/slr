@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.github.rebue.common-pom</groupId>
+		<artifactId>sb-parent</artifactId>
+		<version>1.0.9</version>
+	</parent>
+
+	<groupId>com.github.rebue.slr</groupId>
+	<artifactId>slr</artifactId>
+	<packaging>pom</packaging>
+	<description>卖家微服务</description>
+
+	<modules>
+		<module>slr-gen</module>
+		<module>slr-api</module>
+		<module>slr-bll</module>
+		<module>slr-svr</module>
+		<module>slr-svr-feign</module>
+	</modules>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>com.github.rebue.slr</groupId>
+				<artifactId>slr-api</artifactId>
+				<version>1.0.9</version>
+			</dependency>
+			<dependency>
+				<groupId>com.github.rebue.slr</groupId>
+				<artifactId>slr-bll</artifactId>
+				<version>1.0.9</version>
+			</dependency>
+			<dependency>
+				<groupId>com.github.rebue.suc</groupId>
+				<artifactId>suc-svr-feign</artifactId>
+				<version>1.0.8</version>
+			</dependency>
+			<dependency>
+				<groupId>com.github.rebue.jwt</groupId>
+				<artifactId>jwt-svr-feign</artifactId>
+				<version>1.0.8</version>
+			</dependency>
+			<dependency>
+				<groupId>com.github.rebue.suc</groupId>
+				<artifactId>suc-api</artifactId>
+				<version>1.0.8</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+</project>
