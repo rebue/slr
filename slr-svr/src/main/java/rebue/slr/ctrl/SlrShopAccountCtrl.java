@@ -245,4 +245,15 @@ public class SlrShopAccountCtrl {
 		return svc.listAddedAndUnaddedUsers(to.getId(), 7, to.getAddedKeys(), to.getAddedPageNum(), to.getUnaddedKeys(),
 				to.getUnaddedPageNum());
 	}
+	
+	/**
+	 * 根据条件获取一条数据
+	 * @param mo
+	 * @return
+	 */
+	@GetMapping("/slr/shopaccount/getone")
+	SlrShopAccountMo getOne(@RequestBody SlrShopAccountMo mo) {
+		_log.info("getOne SlrShopAccountMo-{}", mo);
+		return svc.getOne(mo);
+	}
 }
