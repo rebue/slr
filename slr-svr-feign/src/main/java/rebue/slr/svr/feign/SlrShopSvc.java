@@ -1,5 +1,7 @@
 package rebue.slr.svr.feign;
 
+import java.util.List;
+
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,4 +19,12 @@ public interface SlrShopSvc {
 	 */
 	@GetMapping("/slr/shop/getbyid")
 	SlrShopMo getById(@RequestParam("id") java.lang.Long id);
+	
+	/**
+	 * 根据参数获取店铺集合
+	 * @param orgId
+	 * @return
+	 */
+	@GetMapping("/slr/shop")
+	List<SlrShopMo> list(SlrShopMo mo);
 }

@@ -165,19 +165,9 @@ public class SlrShopCtrl {
 	 * @mbg.generated 自动生成，如需修改，请删除本行
 	 */
 	@GetMapping("/slr/shop")
-	PageInfo<SlrShopMo> list(SlrShopMo mo, @RequestParam(value = "pageNum", required = false) Integer pageNum,
-			@RequestParam(value = "pageSize", required = false) Integer pageSize) {
-		if (pageNum == null)
-			pageNum = 1;
-		if (pageSize == null)
-			pageSize = 5;
-		_log.info("list SlrShopMo:" + mo + ", pageNum = " + pageNum + ", pageSize = " + pageSize);
-		if (pageSize > 50) {
-			String msg = "pageSize不能大于50";
-			_log.error(msg);
-			throw new IllegalArgumentException(msg);
-		}
-		PageInfo<SlrShopMo> result = svc.list(mo, pageNum, pageSize);
+	List<SlrShopMo> list(SlrShopMo mo) {
+		_log.info("list查询店铺信息 :{} ",mo);
+		List<SlrShopMo> result = svc.list(mo);
 		_log.info("result: " + result);
 		return result;
 	}
