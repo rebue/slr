@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import rebue.sbs.feign.FeignConfig;
@@ -26,5 +27,5 @@ public interface SlrShopSvc {
 	 * @return
 	 */
 	@GetMapping("/slr/shop")
-	List<SlrShopMo> list(SlrShopMo mo);
+	List<SlrShopMo> list(@RequestBody SlrShopMo mo);
 }

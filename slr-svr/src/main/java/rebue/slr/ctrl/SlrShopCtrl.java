@@ -165,7 +165,7 @@ public class SlrShopCtrl {
 	 * @mbg.generated 自动生成，如需修改，请删除本行
 	 */
 	@GetMapping("/slr/shop")
-	List<SlrShopMo> list(SlrShopMo mo) {
+	List<SlrShopMo> list(@RequestBody SlrShopMo mo) {
 		_log.info("list查询店铺信息 :{} ",mo);
 		List<SlrShopMo> result = svc.list(mo);
 		_log.info("result: " + result);
