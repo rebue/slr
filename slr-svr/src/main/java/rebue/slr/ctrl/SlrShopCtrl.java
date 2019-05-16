@@ -190,9 +190,10 @@ public class SlrShopCtrl {
 	 * @param pageNum
 	 * @param pageSize
 	 * @return
+	 * @throws ParseException 
 	 */
 	@GetMapping("/slr/shop/listshop")
-	PageInfo<SlrShopRo> listShop(SlrShopMo mo, Integer pageNum, Integer pageSize) {
+	PageInfo<SlrShopRo> listShop(SlrShopMo mo, Integer pageNum, Integer pageSize,HttpServletRequest request) throws ParseException {
 		if (pageNum == null)
 			pageNum = 1;
 		if (pageSize == null)
@@ -202,6 +203,12 @@ public class SlrShopCtrl {
 			String msg = "pageSize不能大于50";
 			_log.error(msg);
 			throw new IllegalArgumentException(msg);
+		}
+		if (!isDebug) {
+			Long orgId = (Long) JwtUtils.getJwtAdditionItemInCookie(request, "orgId");
+			mo.setSellerId(orgId);
+		} else {
+			mo.setSellerId(581703841586741249L);
 		}
 		PageInfo<SlrShopRo> listShop = svc.listShop(mo, pageNum, pageSize);
 		return listShop;
