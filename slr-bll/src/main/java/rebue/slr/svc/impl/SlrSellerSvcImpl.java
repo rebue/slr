@@ -134,7 +134,7 @@ public class SlrSellerSvcImpl extends
 
 	/**
 	 * 添加卖家
-	 * 
+	 * 1：先根据卖家名字去组织哪里看看组织是否存在，存在的话直接拉过来
 	 * @param to
 	 * @return
 	 */
@@ -149,10 +149,28 @@ public class SlrSellerSvcImpl extends
 			ro.setMsg("参数错误");
 			return ro;
 		}
-
+		
+		
 		// 组织id/卖家id
 		Long id = _idWorker.getId();
-
+		
+		_log.info("查询组织是否存在的参数为：{}", to.getName());
+		SucOrgMo sucOrgMo=sucOrgSvc.getOne(to.getName());
+		_log.info("查询组织是否存在的结果为：{}", sucOrgMo);
+		if(sucOrgMo !=null) {
+			id=sucOrgMo.getId();
+		}else {
+			SucOrgMo orgMo = dozerMapper.map(to, SucOrgMo.class);
+			orgMo.setId(id);
+			_log.info("sucOrg不存在当前买家组织，所以添加在sucOrg中添加一个组织，参数: {}", orgMo);
+			SucOrgRo sucOrgRo = sucOrgSvc.add(orgMo);
+			_log.info("sucOrg不存在当前买家组织，所以添加在sucOrg中添加一个组织，结果: {}", sucOrgRo);
+			if (sucOrgRo.getResult() != 1) {
+				_log.error("添加sucOrg组织出现错误，请求的参数为：{}", sucOrgRo);
+				throw new RuntimeException("添加组织失败");
+			}
+		}
+		
 		SlrShopMo shopMo = new SlrShopMo();
 		shopMo.setShopName(to.getName());
 		shopMo.setShortName(to.getShortName());
@@ -166,15 +184,7 @@ public class SlrSellerSvcImpl extends
 			throw new RuntimeException("添加店铺失败");
 		}
 
-		SucOrgMo orgMo = dozerMapper.map(to, SucOrgMo.class);
-		orgMo.setId(id);
-		_log.info("添加卖家添加组织的参数为: {}", orgMo);
-		SucOrgRo sucOrgRo = sucOrgSvc.add(orgMo);
-		_log.info("添加卖家添加组织的返回值为: {}", sucOrgRo);
-		if (sucOrgRo.getResult() != 1) {
-			_log.error("添加卖家添加组织出现错误，请求的参数为：{}", sucOrgRo);
-			throw new RuntimeException("添加组织失败");
-		}
+
 
 		_log.info("添加卖家成功，请求的参数为：{}", to);
 		ro.setResult(ResultDic.SUCCESS);
