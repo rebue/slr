@@ -152,9 +152,9 @@ public class SlrShopAccountSvcImpl
 		} else {
 			for (int i = 0; i < shopAccountList.size(); i++) {
 				if (i != 0 && i < shopAccountList.size()) {
-					userIds += ",'" + shopAccountList.get(i).getId() + "'";
+					userIds += ",'" + shopAccountList.get(i).getAccountId() + "'";
 				} else {
-					userIds += "'" + shopAccountList.get(i).getId() + "'";
+					userIds += "'" + shopAccountList.get(i).getAccountId() + "'";
 				}
 			}
 		}
