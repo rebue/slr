@@ -7,6 +7,7 @@ import rebue.robotech.svc.BaseSvc;
 import rebue.slr.jo.SlrShopJo;
 import rebue.slr.mo.SlrShopMo;
 import rebue.slr.ro.SlrShopRo;
+import rebue.slr.to.AddShopTo;
 
 /**
  * 店铺信息
@@ -18,7 +19,7 @@ public interface SlrShopSvc extends BaseSvc<java.lang.Long, SlrShopMo, SlrShopJo
 	/**
 	 * 添加店铺 流程： 1、根据组织id查询组织是否存在 2、添加店铺
 	 */
-	Ro addShop(SlrShopMo mo);
+	Ro addShop(AddShopTo to);
 
 	/**
 	 * 设置禁用或者启用店铺

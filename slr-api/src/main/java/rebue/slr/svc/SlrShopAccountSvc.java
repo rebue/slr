@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.github.pagehelper.PageInfo;
 
+import rebue.robotech.ro.Ro;
 import rebue.robotech.svc.BaseSvc;
 import rebue.slr.jo.SlrShopAccountJo;
 import rebue.slr.mo.SlrShopAccountMo;
@@ -65,5 +66,14 @@ public interface SlrShopAccountSvc extends BaseSvc<java.lang.Long, SlrShopAccoun
 	 * @param shopId
 	 * @param moveIds
 	 */
-	void addEx(Long shopId, Long sellerId, List<Long> moveIds);
+	Ro addEx(Long shopId, Long sellerId, List<Long> moveIds);
+	
+	
+	/**
+	 * 添加店铺帐号，不过先把该买家下的所有店铺的该帐号删除，
+	 * 再将新添加的帐号设置为默认，已确保一个帐号只有一个店铺且是默认的。
+	 * @param mo
+	 * @return
+	 */
+	Ro addShopAccount(SlrShopAccountMo mo);
 }

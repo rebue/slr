@@ -20,7 +20,6 @@ public class AddSellerTo {
 	 *
 	 * 数据库字段: SUC_ORG.NAME
 	 *
-	 * @mbg.generated 自动生成，如需修改，请删除本行
 	 */
 	private String name;
 
@@ -29,7 +28,6 @@ public class AddSellerTo {
 	 *
 	 * 数据库字段: SUC_ORG.SHORT_NAME
 	 *
-	 * @mbg.generated 自动生成，如需修改，请删除本行
 	 */
 	private String shortName;
 
@@ -38,7 +36,6 @@ public class AddSellerTo {
 	 *
 	 * 数据库字段: SUC_ORG.REMARK
 	 *
-	 * @mbg.generated 自动生成，如需修改，请删除本行
 	 */
 	private String remark;
 
@@ -47,7 +44,15 @@ public class AddSellerTo {
 	 *
 	 * 数据库字段: SUC_ORG.CONTACT
 	 *
-	 * @mbg.generated 自动生成，如需修改，请删除本行
 	 */
 	private String contact;
+	
+    
+    /**
+     *    账号ID
+     *
+     *    数据库字段: SLR_SHOP_ACCOUNT.ACCOUNT_ID
+     *
+     */
+    private Long accountId;
 }

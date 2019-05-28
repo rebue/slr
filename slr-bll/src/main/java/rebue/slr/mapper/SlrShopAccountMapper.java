@@ -5,7 +5,6 @@ import java.util.List;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
 
 import rebue.robotech.mapper.MybatisBaseMapper;
 import rebue.slr.mo.SlrShopAccountMo;
@@ -76,6 +75,15 @@ public interface SlrShopAccountMapper extends MybatisBaseMapper<SlrShopAccountMo
      */
     @Delete("delete from SLR_SHOP_ACCOUNT where SHOP_ID = #{shopId,jdbcType=BIGINT} and ACCOUNT_ID IN (${userIds})")
     int delShopAccount(@Param("shopId") Long shopId, @Param("userIds") String userIds);
+    
+    /**
+     *  删除卖家下的所有门店中的某个帐号
+     *  @param shopId
+     *  @param accountId
+     *  @return
+     */
+    @Delete("delete from SLR_SHOP_ACCOUNT where ACCOUNT_ID = #{accountId,jdbcType=BIGINT} and SELLER_ID = #{sellerId,jdbcType=BIGINT}")
+    int delShopAccountByAccountIdAndSellerId(@Param("accountId") Long accountId, @Param("sellerId") Long sellerId);
     
 
 }

@@ -21,11 +21,11 @@ import rebue.slr.dao.SlrSellerDao;
 import rebue.slr.jo.SlrSellerJo;
 import rebue.slr.mapper.SlrSellerMapper;
 import rebue.slr.mo.SlrSellerMo;
-import rebue.slr.mo.SlrShopMo;
 import rebue.slr.ro.SlrSellerRo;
 import rebue.slr.svc.SlrSellerSvc;
 import rebue.slr.svc.SlrShopSvc;
 import rebue.slr.to.AddSellerTo;
+import rebue.slr.to.AddShopTo;
 import rebue.slr.to.ModifySellerTo;
 import rebue.suc.mo.SucOrgMo;
 import rebue.suc.ro.SucOrgRo;
@@ -171,16 +171,17 @@ public class SlrSellerSvcImpl extends
 			}
 		}
 		
-		SlrShopMo shopMo = new SlrShopMo();
-		shopMo.setShopName(to.getName());
-		shopMo.setShortName(to.getShortName());
-		shopMo.setContact(to.getContact());
-		shopMo.setSellerId(id);
-		_log.info("添加卖家添加店铺的参数为：{}", shopMo);
-		Ro addShopRo = slrShopSvc.addShop(shopMo);
+		AddShopTo shopTo = new AddShopTo();
+		shopTo.setShopName(to.getName());
+		shopTo.setShortName(to.getShortName());
+		shopTo.setContact(to.getContact());
+		shopTo.setSellerId(id);
+		shopTo.setAccountId(to.getAccountId());
+		_log.info("添加卖家添加店铺的参数为：{}", shopTo);
+		Ro addShopRo = slrShopSvc.addShop(shopTo);
 		_log.info("添加卖家添加店铺的返回值为：{}", addShopRo);
 		if (addShopRo.getResult() != ResultDic.SUCCESS) {
-			_log.info("添加卖家添加店铺出现错误，请求的参数为：{}", shopMo);
+			_log.info("添加卖家添加店铺出现错误，请求的参数为：{}", shopTo);
 			throw new RuntimeException("添加店铺失败");
 		}
 

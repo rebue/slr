@@ -10,6 +10,9 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import com.github.dozermapper.core.Mapper;
 import com.github.pagehelper.PageInfo;
+
+import rebue.robotech.dic.ResultDic;
+import rebue.robotech.ro.Ro;
 import rebue.robotech.svc.impl.BaseSvcImpl;
 import rebue.slr.dao.SlrShopAccountDao;
 import rebue.slr.jo.SlrShopAccountJo;
@@ -169,7 +172,7 @@ public class SlrShopAccountSvcImpl
 				slrShopMo.getSellerId(), userIds, unaddedKeys, unaddedPageNum, pageSize);
 		_log.info("查询未添加用户信息的返回值为：{}", listByKeysAndNotUserIds);
 		pageInfo = dozerMapper.map(listByKeysAndNotUserIds, PageInfo.class);
-		
+
 		List<SlrShopAccountDetailRo> shopAccountDetailList = new ArrayList<>();
 		for (SucUserDetailRo sucUserDetailRo : listByKeysAndNotUserIds.getList()) {
 			SlrShopAccountDetailRo shpShopAccountDetailRo = dozerMapper.map(sucUserDetailRo,
@@ -219,7 +222,7 @@ public class SlrShopAccountSvcImpl
 		String userIds = "";
 		for (int i = 0; i < shopAccountList.size(); i++) {
 			if (i != 0 && i < shopAccountList.size()) {
-				userIds += ",'" + shopAccountList.get(i).getAccountId()+ "'";
+				userIds += ",'" + shopAccountList.get(i).getAccountId() + "'";
 			} else {
 				userIds += "'" + shopAccountList.get(i).getAccountId() + "'";
 			}
@@ -250,34 +253,51 @@ public class SlrShopAccountSvcImpl
 	 */
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public void addEx(Long shopId, Long sellerId, List<Long> moveIds) {
+	public Ro addEx(Long shopId, Long sellerId, List<Long> moveIds) {
+		Ro ro = new Ro();
 		_log.info("添加店铺账号的参数为：shopId-{}, accountIds-{}", shopId, String.valueOf(moveIds));
 		if (shopId == null || moveIds.size() == 0) {
 			_log.info("添加店铺账号出现参数错误，请求的参数为：shopId-{}, accountIds-{}", shopId, String.valueOf(moveIds));
-			return;
+			ro.setResult(ResultDic.PARAM_ERROR);
+			ro.setMsg("参数错误");
+			return ro;
 		}
 		for (Long accountId : moveIds) {
 			SlrShopAccountMo mo = new SlrShopAccountMo();
 			mo.setSellerId(sellerId);
 			mo.setAccountId(accountId);
-			_log.info("添加店铺账号根据卖家id/组织id和账号id查询用户店铺的参数为：{}", mo);
-			List<SlrShopAccountMo> list = thisSvc.list(mo);
-			_log.info("添加店铺账号根据卖家id/组织id和账号id查询用户店铺的返回值为：{}", String.valueOf(list));
-			Boolean isDefault = false;
-			if (list.size() == 0) {
-				isDefault = true;
-			} else {
-				mo.setIsDefault(true);
-				_log.info("添加店铺账号判断账号是否有默认店铺的参数为：{}", mo);
-				SlrShopAccountMo slrShopAccountMo = thisSvc.getOne(mo);
-				_log.info("添加店铺账号判断账号是否有默认店铺的返回值为：{}", slrShopAccountMo);
-				if (slrShopAccountMo == null) {
-					isDefault = true;
-				}
-			}
-			mo.setIsDefault(isDefault);
+			
+			// 先删除当前用户在当前卖家店铺下的所有帐号再设置一个默认的店铺以确保每个用户只有一个(默认)店铺
+			_log.info("删除用户在当前卖家下所有店铺中的记录参数为：accountId-{}，sellerId-{}", accountId,sellerId);
+			int i = _mapper.delShopAccountByAccountIdAndSellerId(accountId, sellerId);
+			_log.info("删除用户在当前卖家下所有店铺中的记录返回值为：i-{}", i);
+
+			mo.setIsDefault(true);
 			mo.setShopId(shopId);
 			thisSvc.add(mo);
 		}
+		_log.info("添加店铺账号成功");
+		ro.setResult(ResultDic.SUCCESS);
+		ro.setMsg("添加成功");
+		return ro;
+	}
+
+	@Override
+	public Ro addShopAccount(SlrShopAccountMo mo) {
+		mo.setIsDefault(true);
+		_log.info("添加店铺账号参数为 mo-{}",mo);
+		Ro ro = new Ro();
+		// 先删除当前用户在当前卖家店铺下的所有帐号再设置一个默认的店铺以确保每个用户只有一个(默认)店铺
+		_log.info("删除用户在当前卖家下所有店铺中的记录参数为：accountId-{}，sellerId-{}", mo.getAccountId(),mo.getSellerId());
+		int i = _mapper.delShopAccountByAccountIdAndSellerId(mo.getAccountId(), mo.getSellerId());
+		_log.info("删除用户在当前卖家下所有店铺中的记录返回值为：i-{}", i);
+		
+		if(thisSvc.add(mo)!=1) {
+			throw new RuntimeException("添加失败");
+		}
+		_log.info("添加店铺账号成功为");
+		ro.setResult(ResultDic.SUCCESS);
+		ro.setMsg("添加成功");
+		return ro;
 	}
 }

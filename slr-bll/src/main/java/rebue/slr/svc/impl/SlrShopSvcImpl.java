@@ -24,10 +24,13 @@ import rebue.slr.dao.SlrShopDao;
 import rebue.slr.jo.SlrShopJo;
 import rebue.slr.mapper.SlrShopMapper;
 import rebue.slr.mo.SlrSellerMo;
+import rebue.slr.mo.SlrShopAccountMo;
 import rebue.slr.mo.SlrShopMo;
 import rebue.slr.ro.SlrShopRo;
 import rebue.slr.svc.SlrSellerSvc;
+import rebue.slr.svc.SlrShopAccountSvc;
 import rebue.slr.svc.SlrShopSvc;
+import rebue.slr.to.AddShopTo;
 import rebue.suc.ro.SucOrgRo;
 import rebue.suc.svr.feign.SucOrgSvc;
 
@@ -78,12 +81,20 @@ public class SlrShopSvcImpl extends BaseSvcImpl<java.lang.Long, SlrShopJo, SlrSh
 	@Resource
 	private SlrSellerSvc slrSellerSvc;
 
+	@Resource
+	private SlrShopAccountSvc shopAccountSvc;
+
 	/**
 	 * 添加店铺 流程： 1、根据组织id查询组织是否存在 2、添加店铺
 	 */
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public Ro addShop(SlrShopMo mo) {
+	public Ro addShop(AddShopTo to) {
+		SlrShopMo mo = dozerMapper.map(to, SlrShopMo.class);
+		// 如果id为空那么自动生成分布式id,为了下面的店铺可以获取到这个id
+		if (mo.getId() == null || mo.getId() == 0) {
+			mo.setId(_idWorker.getId());
+		}
 		_log.info("添加店铺的参数为：{}", mo);
 		Ro ro = new Ro();
 		if (StringUtils.isAnyBlank(mo.getShopName(), mo.getShortName()) || mo.getSellerId() == null) {
@@ -115,6 +126,19 @@ public class SlrShopSvcImpl extends BaseSvcImpl<java.lang.Long, SlrShopJo, SlrSh
 			_log.error("添加店铺失败，请求的参数为：{}", mo);
 			throw new RuntimeException("添加失败");
 		}
+
+		// 将当前用户添加进去当前店铺中
+		SlrShopAccountMo addShopAccountMo = new SlrShopAccountMo();
+		addShopAccountMo.setAccountId(to.getAccountId());
+		addShopAccountMo.setSellerId(mo.getSellerId());
+		addShopAccountMo.setShopId(mo.getId());
+		_log.info("将当前用户添加进去当前店铺中的参数为：{}", addShopAccountMo);
+		Ro addShopAccountResult = shopAccountSvc.addShopAccount(addShopAccountMo);
+		if (addShopAccountResult.getResult() != ResultDic.SUCCESS) {
+			_log.error("将当前用户添加进去当前店铺中失败，请求的参数为：{}", addShopAccountMo);
+			throw new RuntimeException("添加失败");
+		}
+
 		_log.info("添加店铺成功，请求的参数为：{}", mo);
 		ro.setResult(ResultDic.SUCCESS);
 		ro.setMsg("添加成功");

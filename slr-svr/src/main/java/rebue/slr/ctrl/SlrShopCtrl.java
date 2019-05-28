@@ -25,6 +25,7 @@ import rebue.robotech.ro.Ro;
 import rebue.slr.mo.SlrShopMo;
 import rebue.slr.ro.SlrShopRo;
 import rebue.slr.svc.SlrShopSvc;
+import rebue.slr.to.AddShopTo;
 import rebue.wheel.turing.JwtUtils;
 
 /**
@@ -221,10 +222,10 @@ public class SlrShopCtrl {
 	 * @return
 	 */
 	@PostMapping("/slr/shop/addshop")
-	Ro addShop(@RequestBody SlrShopMo mo) {
-		_log.info("添加店铺的请求参数为：{}", mo);
+	Ro addShop(@RequestBody AddShopTo to) {
+		_log.info("添加店铺的请求参数为：{}", to);
 		try {
-			return svc.addShop(mo);
+			return svc.addShop(to);
 		} catch (Exception e) {
 			_log.info("添加店铺出现异常：{}", e);
 			Ro ro = new Ro();
