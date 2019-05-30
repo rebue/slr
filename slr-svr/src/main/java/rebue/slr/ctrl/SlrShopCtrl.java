@@ -23,6 +23,8 @@ import rebue.robotech.dic.ResultDic;
 import rebue.robotech.ro.IdRo;
 import rebue.robotech.ro.Ro;
 import rebue.slr.mo.SlrShopMo;
+import rebue.slr.msg.SlrModifyShopNameMsg;
+import rebue.slr.pub.SlrModifyShopNameDonePub;
 import rebue.slr.ro.SlrShopRo;
 import rebue.slr.svc.SlrShopSvc;
 import rebue.slr.to.AddShopTo;
@@ -49,7 +51,9 @@ public class SlrShopCtrl {
 	 */
 	@Resource
 	private SlrShopSvc svc;
-
+	
+	@Resource
+	private SlrModifyShopNameDonePub slrModifyShopNameDonePub;
 	/**
 	 * 有唯一约束的字段名称
 	 *
@@ -112,6 +116,11 @@ public class SlrShopCtrl {
 				_log.info("{}: mo-{}", msg, mo);
 				ro.setMsg(msg);
 				ro.setResult(ResultDic.SUCCESS);
+				SlrModifyShopNameMsg slrModifyShopNameMsg=new SlrModifyShopNameMsg();
+				slrModifyShopNameMsg.setId(mo.getId());
+				slrModifyShopNameMsg.setName(mo.getShopName());
+				_log.info("发布消息的参数为slrModifyShopNameMsg-{}",slrModifyShopNameMsg);
+				slrModifyShopNameDonePub.send(slrModifyShopNameMsg);
 				return ro;
 			} else {
 				String msg = "修改失败";
