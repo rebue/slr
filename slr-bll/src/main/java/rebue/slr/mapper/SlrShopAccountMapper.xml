@@ -209,4 +209,32 @@
       </if>
     </where>
   </select>
+  
+  
+    <select id="getOneShopAccount" parameterType="rebue.slr.mo.SlrShopAccountMo" resultMap="BaseResultMap">
+    <!--
+			根据条件获取单个账户信息
+    -->
+    select 
+    <include refid="Base_Column_List" />
+    from SLR_SHOP_ACCOUNT
+    <where>
+      <if test="shopId != null">
+        and SHOP_ID = #{shopId,jdbcType=BIGINT}
+      </if>
+      <if test="sellerId != null">
+        and SELLER_ID = #{sellerId,jdbcType=BIGINT}
+      </if>
+      <if test="accountId != null">
+        and ACCOUNT_ID = #{accountId,jdbcType=BIGINT}
+      </if>
+      <if test="isDefault != null">
+        and IS_DEFAULT = #{isDefault,jdbcType=TINYINT}
+      </if>
+    </where>
+     limit 1
+  </select>
+  
+  
+  
 </mapper>

@@ -2,7 +2,6 @@ package rebue.slr.svr.feign;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import rebue.sbs.feign.FeignConfig;
@@ -24,6 +23,6 @@ public interface SlrShopAccountSvc {
 	 * @param mo
 	 * @return
 	 */
-	@GetMapping("/slr/shopaccount/getone")
-	SlrShopAccountMo getOne(@RequestBody SlrShopAccountMo mo);
+	@GetMapping("/slr/shopaccount/getOneShopAccount")
+	SlrShopAccountMo getOne( SlrShopAccountMo mo);
 }

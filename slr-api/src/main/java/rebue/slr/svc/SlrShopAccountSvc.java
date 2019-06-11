@@ -76,4 +76,12 @@ public interface SlrShopAccountSvc extends BaseSvc<java.lang.Long, SlrShopAccoun
 	 * @return
 	 */
 	Ro addShopAccount(SlrShopAccountMo mo);
+	
+	
+	
+	/**
+	根据条件获取单个店铺信息
+	 * @return
+	 */
+	SlrShopAccountMo getOneShopAccount(SlrShopAccountMo mo);
 }

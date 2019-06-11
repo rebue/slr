@@ -300,4 +300,10 @@ public class SlrShopAccountSvcImpl
 		ro.setMsg("添加成功");
 		return ro;
 	}
+
+	@Override
+	public SlrShopAccountMo getOneShopAccount(SlrShopAccountMo mo) {
+		
+		return _mapper.getOneShopAccount(mo);
+	}
 }

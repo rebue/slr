@@ -85,5 +85,10 @@ public interface SlrShopAccountMapper extends MybatisBaseMapper<SlrShopAccountMo
     @Delete("delete from SLR_SHOP_ACCOUNT where ACCOUNT_ID = #{accountId,jdbcType=BIGINT} and SELLER_ID = #{sellerId,jdbcType=BIGINT}")
     int delShopAccountByAccountIdAndSellerId(@Param("accountId") Long accountId, @Param("sellerId") Long sellerId);
     
-
+    /**
+     * 根据条件获取单个账户信息
+     * @param record
+     * @return
+     */
+    SlrShopAccountMo  getOneShopAccount(SlrShopAccountMo record);
 }

@@ -251,9 +251,9 @@ public class SlrShopAccountCtrl {
 	 * @param mo
 	 * @return
 	 */
-	@GetMapping("/slr/shopaccount/getone")
-	SlrShopAccountMo getOne(@RequestBody SlrShopAccountMo mo) {
-		_log.info("getOne SlrShopAccountMo-{}", mo);
-		return svc.getOne(mo);
+	@GetMapping("/slr/shopaccount/getOneShopAccount")
+	SlrShopAccountMo getOneShopAccount( SlrShopAccountMo mo) {
+		_log.info("getOneShopAccount SlrShopAccountMo-{}", mo);
+		return svc.getOneShopAccount(mo);
 	}
 }
