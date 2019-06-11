@@ -1,6 +1,9 @@
 package rebue.slr.ctrl;
 
 import com.github.pagehelper.PageInfo;
+
+import java.util.List;
+
 import javax.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -256,4 +259,24 @@ public class SlrShopAccountCtrl {
 		_log.info("getOneShopAccount SlrShopAccountMo-{}", mo);
 		return svc.getOneShopAccount(mo);
 	}
+	
+	/**
+	 * 根据条件获取一条数据
+	 * @param mo
+	 * @return
+	 */
+	@GetMapping("/slr/shopaccount/getOneShopAccountByAccountId")
+	SlrShopAccountMo getOneShopAccountByAccountId( @RequestParam("accountId") Long accountId ) {
+		_log.info("getOneShopAccountByAccountId accountId-{}",accountId);
+		SlrShopAccountMo slrShopAccountMo=new SlrShopAccountMo();
+		slrShopAccountMo.setAccountId(accountId);
+		slrShopAccountMo.setIsDefault(true);
+		List<SlrShopAccountMo> result=svc.list(slrShopAccountMo);
+		if(result.size() >0 ) {
+			return result.get(0);
+		}else {
+			return null;
+		}
+	}
+	
 }

@@ -23,6 +23,6 @@ public interface SlrShopAccountSvc {
 	 * @param mo
 	 * @return
 	 */
-	@GetMapping("/slr/shopaccount/getOneShopAccount")
-	SlrShopAccountMo getOne( SlrShopAccountMo mo);
+	@GetMapping("/slr/shopaccount/getOneShopAccountByAccountId")
+	SlrShopAccountMo getOneShopAccountByAccountId(@RequestParam("accountId") java.lang.Long accountId);
 }
