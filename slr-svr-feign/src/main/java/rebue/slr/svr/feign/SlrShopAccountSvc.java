@@ -7,22 +7,23 @@ import org.springframework.web.bind.annotation.RequestParam;
 import rebue.sbs.feign.FeignConfig;
 import rebue.slr.mo.SlrShopAccountMo;
 
-@FeignClient(name = "slr-svr", configuration = FeignConfig.class)
+@FeignClient(name = "slr-svr", configuration = FeignConfig.class, contextId = "slr-svr-shop-account")
 public interface SlrShopAccountSvc {
 
-	/**
-	 * 获取单个店铺账号
-	 *
-	 * @mbg.generated 自动生成，如需修改，请删除本行
-	 */
-	@GetMapping("/slr/shopaccount/getbyid")
-	SlrShopAccountMo getById(@RequestParam("id") java.lang.Long id);
-	
-	/**
-	 * 根据条件获取一条数据
-	 * @param mo
-	 * @return
-	 */
-	@GetMapping("/slr/shopaccount/getOneShopAccountByAccountId")
-	SlrShopAccountMo getOneShopAccountByAccountId(@RequestParam("accountId") java.lang.Long accountId);
+    /**
+     * 获取单个店铺账号
+     *
+     * @mbg.generated 自动生成，如需修改，请删除本行
+     */
+    @GetMapping("/slr/shopaccount/getbyid")
+    SlrShopAccountMo getById(@RequestParam("id") java.lang.Long id);
+
+    /**
+     * 根据条件获取一条数据
+     * 
+     * @param mo
+     * @return
+     */
+    @GetMapping("/slr/shopaccount/getOneShopAccountByAccountId")
+    SlrShopAccountMo getOneShopAccountByAccountId(@RequestParam("accountId") java.lang.Long accountId);
 }
