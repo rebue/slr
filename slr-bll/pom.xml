@@ -22,6 +22,11 @@
 			<groupId>com.github.rebue.suc</groupId>
 			<artifactId>suc-svr-feign</artifactId>
 		</dependency>
+		
+		<dependency>
+			<groupId>com.github.rebue.rep</groupId>
+			<artifactId>rep-svr-feign</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>com.github.rebue.robotech</groupId>

@@ -29,4 +29,10 @@ public interface SlrShopSvc {
      */
     @GetMapping("/slr/shop")
     List<SlrShopMo> list(@RequestBody SlrShopMo mo);
+
+    /**
+     * 查询所有店铺信息
+     */
+    @GetMapping("/slr/shop/all")
+    List<SlrShopMo> listAll();
 }
