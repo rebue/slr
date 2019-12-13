@@ -27,6 +27,8 @@ import rebue.slr.mapper.SlrShopMapper;
 import rebue.slr.mo.SlrSellerMo;
 import rebue.slr.mo.SlrShopAccountMo;
 import rebue.slr.mo.SlrShopMo;
+import rebue.slr.pub.AddShopDonePub;
+import rebue.slr.pub.SlrModifyShopNameDonePub;
 import rebue.slr.ro.SlrShopRo;
 import rebue.slr.svc.SlrSellerSvc;
 import rebue.slr.svc.SlrShopAccountSvc;
@@ -88,6 +90,9 @@ public class SlrShopSvcImpl extends BaseSvcImpl<java.lang.Long, SlrShopJo, SlrSh
     @Resource
     private RepRevenuAnnualSvr repRevenuAnnualSvr;
 
+    @Resource
+    private AddShopDonePub addShopDonePub;
+    
     /**
      * 添加店铺 流程： 1、根据组织id查询组织是否存在 2、添加店铺
      */
@@ -147,8 +152,8 @@ public class SlrShopSvcImpl extends BaseSvcImpl<java.lang.Long, SlrShopJo, SlrSh
         ro.setResult(ResultDic.SUCCESS);
         ro.setMsg("添加成功");
 
-        // 定时任务创建营收报表
-        repRevenuAnnualSvr.createRevenueReportTask();
+        // 发布定时任务创建营收报表任务消息通知
+        addShopDonePub.send("添加店铺完成，发布店铺完成通知消息！！！！！！！！！！！！");
         return ro;
     }
 
